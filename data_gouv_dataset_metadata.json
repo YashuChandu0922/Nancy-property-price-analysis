@@ -1,0 +1,683 @@
+{
+  "access_audiences": [],
+  "access_type": "open",
+  "access_type_reason": null,
+  "access_type_reason_category": null,
+  "acronym": "DVF géolocalisées",
+  "archived": null,
+  "authorization_request_url": null,
+  "badges": [],
+  "contact_points": [],
+  "created_at": "2019-04-25T15:42:34.765000+00:00",
+  "deleted": null,
+  "description": "Ce jeu de données est dérivé du jeu de données [Demandes de valeurs foncières](https://www.data.gouv.fr/datasets/5c4ae55a634f4117716d5656/) diffusé par la DGFiP.\n\nIl propose un format alternatif, **normalisé** et **enrichi**.\n\n### Améliorations par rapport aux fichiers bruts\n\n* **CSV avec séparateur virgule et encodage UTF-8**\n* Mise à jour avec les **référentiels les plus récents** à chaque livraison : [cadastre Etalab](https://cadastre.data.gouv.fr/datasets/cadastre-etalab) (millésime de mars pour la livraison d'avril, de juin pour la livraison d'octobre) et [Code officiel géographique 2026](https://www.insee.fr/fr/information/8740222) de l'INSEE\n* Renommage des colonnes pour un traitement informatique plus facile\n* Suppression des colonnes non fournies dans la diffusion DVF\n* Jointure avec les tables fournies en documentation\n* Normalisation des valeurs décimales (point comme séparateur décimal)\n* Normalisation des codes postaux (5 caractères)\n* Normalisation des **codes INSEE**\n* Libellés de communes riches (accentués)\n* Normalisation des codes voie (FANTOIR) (4 caractères)\n* Création d'un **identifiant de parcelle** compatible avec les fichiers cadastraux proposés par Etalab\n* Date de mutation au **format ISO-8601**\n* Géocodage latitude/longitude à la parcelle en **coordonnées WGS-84**\n* Fourniture d'un fichier par année et d'un **fichier unique couvrant les 5 dernières années glissantes**\n\nNote : Chaque livraison semestrielle de la DGFiP apportant des corrections sur l'ensemble de l'historique, **les 5 années sont intégralement retraitées à chaque mise à jour**. Le décalage entre la fin de la couverture temporelle des données et la date de mise à jour est d'environ un semestre. Pour la livraison d'octobre, cela représente donc 6 fichiers:  4 années entières, et 2 semestres.\n\n### Schéma\n\nPour la description étendue de la signification des champs, nous vous recommandons de consulter la [notice officielle](https://www.data.gouv.fr/datasets/r/d573456c-76eb-4276-b91c-e6b9c89d6656).\n\n* `id_mutation` : Identifiant de mutation (non stable d'une livraison à l'autre, sert à grouper les lignes)\n* `date_mutation` : Date de la mutation au format ISO-8601 (YYYY-MM-DD)\n* `numero_disposition` : Numéro de disposition\n* `nature_mutation` : Nature de la mutation\n* `valeur_fonciere` : Valeur foncière (séparateur décimal = point)\n* `adresse_numero` : Numéro de l'adresse\n* `adresse_suffixe` : Suffixe du numéro de l'adresse (B, T, Q)\n* `adresse_code_voie` : Code FANTOIR de la voie (4 caractères)\n* `adresse_nom_voie` : Nom de la voie de l'adresse\n* `code_postal` : Code postal (5 caractères)\n* `code_commune` : Code commune INSEE actuel (5 caractères)\n* `nom_commune` : Nom actuel de la commune (accentué)\n* `ancien_code_commune` : Code commune INSEE d'origine, si différent du code actuel\n* `ancien_nom_commune` : Nom de commune d'origine, si le code commune a changé\n* `code_departement` : Code département INSEE (2 ou 3 caractères)\n* `id_parcelle` : Identifiant de parcelle actuel (14 caractères)\n* `ancien_id_parcelle` : Identifiant de parcelle d'origine, si différent de l'identifiant actuel\n* `numero_volume` : Numéro de volume\n* `lot_1_numero` : Numéro du lot 1\n* `lot_1_surface_carrez` : Surface Carrez du lot 1\n* `lot_2_numero` : Numéro du lot 2\n* `lot_2_surface_carrez` : Surface Carrez du lot 2\n* `lot_3_numero` : Numéro du lot 3\n* `lot_3_surface_carrez` : Surface Carrez du lot 3\n* `lot_4_numero` : Numéro du lot 4\n* `lot_4_surface_carrez` : Surface Carrez du lot 4\n* `lot_5_numero` : Numéro du lot 5\n* `lot_5_surface_carrez` : Surface Carrez du lot 5\n* `nombre_lots` : Nombre de lots\n* `code_type_local` : Code de type de local\n* `type_local` : Libellé du type de local\n* `surface_reelle_bati` : Surface réelle du bâti\n* `nombre_pieces_principales` : Nombre de pièces principales\n* `code_nature_culture` : Code de nature de culture\n* `nature_culture` : Libellé de nature de culture\n* `code_nature_culture_speciale` : Code de nature de culture spéciale\n* `nature_culture_speciale` : Libellé de nature de culture spéciale\n* `surface_terrain` : Surface du terrain\n* `longitude` : Longitude du centre de la parcelle concernée (WGS-84)\n* `latitude` : Latitude du centre de la parcelle concernée (WGS-84)\n\n### Méthode de géocodage\n\nLes coordonnées sont obtenues par jointure entre l'identifiant de parcelle et les [fichiers cadastraux Etalab](https://cadastre.data.gouv.fr/datasets/cadastre-etalab).\n\nPour chaque année, les mutations sont rapprochées du **millésime du cadastre en vigueur à leur date** : on part du dernier millésime de l'année précédente, puis on utilise successivement chaque millésime de l'année. Les mutations dont la parcelle n'est pas trouvée dans un millésime sont recherchées dans le suivant, jusqu'au plus récent. Cette méthode permet de retrouver davantage de parcelles qu'auparavant.\n\nCertaines lignes restent sans coordonnées, principalement lorsque la géométrie de la parcelle est absente ou erronée dans le cadastre, ou lorsque la parcelle est passée dans le domaine public.\n\n### Mise à jour des communes et des parcelles\n\nÀ partir des coordonnées obtenues, la parcelle et la commune **actuelles** sont retrouvées dans le cadastre le plus récent :\n\n* si seul l'identifiant de parcelle a changé, l'identifiant d'origine est conservé dans `ancien_id_parcelle` ;\n* si le code commune a changé (fusion, rattachement...), le code, le nom et l'identifiant de parcelle d'origine passent dans les colonnes `ancien_*`, l'identifiant de parcelle est recalculé et le nom de commune actuel est issu du référentiel INSEE des communes depuis 1943 ;\n* si rien n'a changé, les colonnes `ancien_*` restent vides.\n\nLes coordonnées et certaines valeurs peuvent donc différer légèrement des livraisons antérieures à octobre 2026.\n\nLes mutations concernant des communes qui changent de département durant la couverture temporelle de ce jeu de données ne voient pas leur département ni numéro de parcelle être mis à jour. Cela ne concerne actuellement que 2 mutations (`code_commune` :  en 2022, 44060 devrait être 49382, en 2025, 49144 devrait être 44225).\n\n### Code source\n\nCes fichiers sont produits par un traitement Airflow, dont le code est disponible sur le [dépôt des pipelines de data.gouv.fr](https://github.com/datagouv/datagouvfr_data_pipelines/tree/main/data_processing/dvf/geoloc) (licence MIT). Jusqu'en avril 2026, ils étaient produits par [ces scripts Node.js](https://github.com/datagouv/dvf).\n\n### Historique\n\n24/04/2019 : première livraison\n25/04/2019 : rétablissement du numéro de disposition + corrections diverses ([détails](https://github.com/etalab/dvf/releases/tag/v1.0.1))\n26/04/2019 : création de l'identifiant de mutation + corrections diverses ([détails](https://github.com/etalab/dvf/releases/tag/v1.1.0))\n27/04/2019 : alignement sur le COG 2019 + corrections diverses ([détails](https://github.com/etalab/dvf/releases/tag/v1.2.0))\n31/10/2019 : nouvelles données DVF d'octobre 2019 + corrections diverses ([détails](https://github.com/etalab/dvf/releases/tag/v1.3.0))\n16/04/2020 : nouvelles données DVF d'avril 2020\n08/11/2020 : nouvelles données DVF d'octobre 2020\n10/04/2021 : nouvelles données DVF d'avril 2021\n26/10/2021 : nouvelles données DVF d'octobre 2021\n13/04/2022 : nouvelles données DVF d'avril 2022\n26/10/2022 : nouvelles données DVF d'octobre 2022\n10/04/2023 : nouvelles données DVF d'avril 2023\n13/10/2023 : nouvelles données DVF d'octobre 2023\n17/04/2024 : nouvelles données DVF d'avril 2024\n11/10/2024 : nouvelles données DVF d'octobre 2024\n14/04/2025 : nouvelles données DVF d'avril 2025\n22/09/2025 : nouvelles données DVF d'octobre 2025\n20/04/2026 : nouvelles données DVF d'avril 2026\n20/10/2026 : nouvelles données DVF d'octobre 2026. Migration du traitement vers Airflow : nouvelle méthode de géocodage (millésimes successifs du cadastre), nouvelle méthode de mise à jour des communes et parcelles (colonnes `ancien_*`), ajout de fichiers par année et d'un fichier unique sur 5 ans et archive de l'arborescence par géographie\n18/11/2026 : les fichiers par année sont rendus requêtables via TabularAPI\n",
+  "description_short": null,
+  "doi": null,
+  "extras": {
+    "recommendations-externals": [
+      {
+        "id": "https://explore.data.gouv.fr/immobilier",
+        "messages": {
+          "en": {
+            "button": "Visit the « Demandes de valeur foncière (DVF) » app",
+            "message": "The « Données de valeur foncière (DVF) » app allows you to easily find information on sold properties from the Direction générale des finances publiques base.",
+            "title": "Are you looking for a property’s sale price?"
+          },
+          "fr": {
+            "button": "Consulter l’application « Données de valeur foncière (DVF) »",
+            "message": "L’application « Données de valeur foncière (DVF) » vous permet d’accéder à une information claire sur les biens vendus issus de la base de la Direction générale des finances publiques.",
+            "title": "Vous cherchez le prix de vente d’un bien immobilier ou d’un terrain ?"
+          }
+        },
+        "score": 50,
+        "source": "edito"
+      },
+      {
+        "id": "https://app.dvf.etalab.gouv.fr/",
+        "messages": {
+          "en": {
+            "button": "Visit the « Demandes de valeur foncière (DVF) » app",
+            "message": "The « Données de valeur foncière (DVF) » app allows you to easily find information on sold properties from the Direction générale des finances publiques base.",
+            "title": "Are you looking for a property’s sale price?"
+          },
+          "fr": {
+            "button": "Consulter l’application « Données de valeur foncière (DVF) »",
+            "message": "L’application « Données de valeur foncière (DVF) » vous permet d’accéder à une information claire sur les biens vendus issus de la base de la Direction générale des finances publiques.",
+            "title": "Vous cherchez le prix de vente d’un bien immobilier ou d’un terrain ?"
+          }
+        },
+        "score": 50,
+        "source": "edito"
+      }
+    ],
+    "recommendations-reuses": [
+      {
+        "id": "5cc2dfbe8b4c414c91ffc46d",
+        "score": 50,
+        "source": "edito"
+      }
+    ],
+    "recommendations:sources": [
+      "edito"
+    ]
+  },
+  "featured": true,
+  "frequency": "semiannual",
+  "frequency_date": "2025-04-14T00:00:00+00:00",
+  "geopf": null,
+  "harvest": null,
+  "id": "5cc1b94a634f4165e96436c1",
+  "internal": {
+    "created_at_internal": "2019-04-25T15:42:34.765000+00:00",
+    "last_modified_internal": "2026-11-18T13:28:31.071000+00:00"
+  },
+  "last_modified": "2026-11-18T13:28:31.071000+00:00",
+  "last_update": "2026-11-23T19:47:29.165000+00:00",
+  "license": "lov2",
+  "metrics": {
+    "dataservices": 2,
+    "discussions": 130,
+    "discussions_open": 122,
+    "followers": 56,
+    "followers_by_months": {
+      "2025-10": 0,
+      "2025-11": 0,
+      "2025-12": 0,
+      "2026-01": 0,
+      "2026-02": 0,
+      "2026-03": 0,
+      "2026-04": 0,
+      "2026-05": 0,
+      "2026-06": 0,
+      "2026-07": 0,
+      "2026-08": 0,
+      "2026-09": 0,
+      "2026-10": 0
+    },
+    "resources_downloads": 103399,
+    "reuses": 239,
+    "reuses_by_months": {
+      "2025-11": 0,
+      "2025-12": 2,
+      "2026-01": 1,
+      "2026-02": 0,
+      "2026-03": 1,
+      "2026-04": 3,
+      "2026-05": 3,
+      "2026-06": 8,
+      "2026-07": 12,
+      "2026-08": 23,
+      "2026-09": 28,
+      "2026-10": 49,
+      "2026-11": 35
+    },
+    "views": 366991
+  },
+  "organization": {
+    "acronym": null,
+    "badges": [
+      {
+        "kind": "public-service"
+      },
+      {
+        "kind": "certified"
+      }
+    ],
+    "class": "Organization",
+    "id": "646b7187b50b2a93b1ae3d45",
+    "logo": "https://udata-avatars.s3.rbx.io.cloud.ovh.net/31/8739c52c534ed583b0256ee4541875.png",
+    "logo_thumbnail": "https://udata-avatars.s3.rbx.io.cloud.ovh.net/31/8739c52c534ed583b0256ee4541875-100.png",
+    "name": "data.gouv.fr",
+    "page": "https://www.data.gouv.fr/organizations/data-gouv-fr",
+    "permissions": {
+      "delete": false,
+      "edit": false,
+      "harvest": false,
+      "members": false,
+      "private": false
+    },
+    "slug": "data-gouv-fr",
+    "uri": "https://www.data.gouv.fr/api/1/organizations/data-gouv-fr/"
+  },
+  "owner": null,
+  "page": "https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres-geolocalisees",
+  "permissions": {
+    "delete": false,
+    "edit": false,
+    "edit_resources": false
+  },
+  "private": false,
+  "quality": {
+    "all_resources_available": true,
+    "dataset_description_quality": true,
+    "has_open_format": true,
+    "has_resources": true,
+    "license": true,
+    "resources_documentation": true,
+    "score": 1.0,
+    "spatial": true,
+    "temporal_coverage": true,
+    "update_frequency": true,
+    "update_fulfilled_in_time": true
+  },
+  "resources": [
+    {
+      "checksum": {
+        "type": "sha1",
+        "value": "077a1f07b802c32bb9d490b86f2496b1cec12950"
+      },
+      "created_at": "2026-10-20T11:30:29.586000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 56447683,
+        "analysis:checksum": "fe315b2210c595c8d9eee63f0ce47fda3960a442",
+        "analysis:content-length": 494865340,
+        "analysis:last-modified-at": "2026-10-21T09:21:43+00:00",
+        "analysis:last-modified-detection": "last-modified-header",
+        "analysis:mime-type": "text/csv",
+        "analysis:parsing:finished_at": "2026-11-09T09:43:17.809688+00:00",
+        "analysis:parsing:geojson_size": 2945452787,
+        "analysis:parsing:geojson_url": "https://hydra.s3.rbx.io.cloud.ovh.net/geojson/57ec266f-be5f-4daf-a9ce-b3af60391708.geojson",
+        "analysis:parsing:parquet_size": 81758222,
+        "analysis:parsing:parquet_url": "https://hydra.s3.rbx.io.cloud.ovh.net/parquet/57ec266f-be5f-4daf-a9ce-b3af60391708.parquet",
+        "analysis:parsing:parsing_table": "8d557329f319922bc48520c775ac3ff0",
+        "analysis:parsing:pmtiles_size": 178020376,
+        "analysis:parsing:pmtiles_url": "https://hydra.s3.rbx.io.cloud.ovh.net/pmtiles/57ec266f-be5f-4daf-a9ce-b3af60391708.pmtiles",
+        "analysis:parsing:started_at": "2026-11-09T09:39:35.952488+00:00",
+        "check:available": true,
+        "check:cors:allow-credentials": "true",
+        "check:cors:allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+        "check:cors:allow-methods": "GET, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-11-18T19:00:45.563235Z",
+        "check:headers:content-length": 75478922,
+        "check:headers:content-type": "application/gzip",
+        "check:id": 57008130,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": 75478922,
+      "filetype": "file",
+      "format": "csv.gz",
+      "geopf": null,
+      "harvest": null,
+      "id": "57ec266f-be5f-4daf-a9ce-b3af60391708",
+      "internal": {
+        "created_at_internal": "2026-10-20T11:30:29.586000+00:00",
+        "last_modified_internal": "2026-10-20T11:30:29.767000+00:00"
+      },
+      "last_modified": "2026-10-20T11:30:29.767000+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/57ec266f-be5f-4daf-a9ce-b3af60391708",
+      "metrics": {
+        "views": 199
+      },
+      "mime": "application/gzip",
+      "preview_url": "https://explore.data.gouv.fr/fr/resources/57ec266f-be5f-4daf-a9ce-b3af60391708",
+      "schema": null,
+      "title": "DVF 2021 (2nd semestre)",
+      "type": "main",
+      "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres-geolocalisees/20261020-113024/full-2021-s2.csv.gz"
+    },
+    {
+      "checksum": {
+        "type": "sha1",
+        "value": "a6e76cd85bf0bf09e52b0e72e0eca0c851925a5c"
+      },
+      "created_at": "2026-10-20T11:42:30.350000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 56987611,
+        "analysis:checksum": "9e139f3de4e1bb09f066ca26114a7166b267e27a",
+        "analysis:content-length": 902331810,
+        "analysis:last-modified-at": "2026-10-21T09:23:24Z",
+        "analysis:last-modified-detection": "last-modified-header",
+        "analysis:mime-type": "text/csv",
+        "analysis:parsing:finished_at": "2026-11-18T09:19:04.305712Z",
+        "analysis:parsing:geojson_size": 5441720641,
+        "analysis:parsing:geojson_url": "https://hydra.s3.rbx.io.cloud.ovh.net/geojson/8e32f824-9382-40b3-b0f5-3997aa4c4351.geojson",
+        "analysis:parsing:parquet_size": 149105551,
+        "analysis:parsing:parquet_url": "https://hydra.s3.rbx.io.cloud.ovh.net/parquet/8e32f824-9382-40b3-b0f5-3997aa4c4351.parquet",
+        "analysis:parsing:parsing_table": "e93c949d262c187b9fbcb6da91df15ee",
+        "analysis:parsing:pmtiles_size": 396466637,
+        "analysis:parsing:pmtiles_url": "https://hydra.s3.rbx.io.cloud.ovh.net/pmtiles/8e32f824-9382-40b3-b0f5-3997aa4c4351.pmtiles",
+        "analysis:parsing:started_at": "2026-11-18T09:09:22.235074Z",
+        "check:available": true,
+        "check:cors:allow-credentials": "true",
+        "check:cors:allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+        "check:cors:allow-methods": "GET, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-11-18T09:06:52.627219Z",
+        "check:headers:content-length": 141270325,
+        "check:headers:content-type": "application/gzip",
+        "check:id": 56987611,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": 141270325,
+      "filetype": "file",
+      "format": "csv.gz",
+      "geopf": null,
+      "harvest": null,
+      "id": "8e32f824-9382-40b3-b0f5-3997aa4c4351",
+      "internal": {
+        "created_at_internal": "2026-10-20T11:42:30.350000+00:00",
+        "last_modified_internal": "2026-10-20T11:42:30.868000+00:00"
+      },
+      "last_modified": "2026-10-20T11:42:30.868000+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/8e32f824-9382-40b3-b0f5-3997aa4c4351",
+      "metrics": {
+        "views": 200
+      },
+      "mime": "application/gzip",
+      "preview_url": "https://explore.data.gouv.fr/fr/resources/8e32f824-9382-40b3-b0f5-3997aa4c4351",
+      "schema": null,
+      "title": "DVF 2022",
+      "type": "main",
+      "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres-geolocalisees/20261020-114218/full-2022.csv.gz"
+    },
+    {
+      "checksum": {
+        "type": "sha1",
+        "value": "1fdaf0d76d52c4ca4b6e18fea382cab2faa6d06b"
+      },
+      "created_at": "2026-10-20T11:43:46.025000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 56987600,
+        "analysis:checksum": "2b59bd5638853a9fda4741c68d1b1f372a2d81d4",
+        "analysis:content-length": 735015559,
+        "analysis:last-modified-at": "2026-10-21T09:23:36Z",
+        "analysis:last-modified-detection": "last-modified-header",
+        "analysis:mime-type": "text/csv",
+        "analysis:parsing:finished_at": "2026-11-18T09:16:06.671060Z",
+        "analysis:parsing:geojson_size": 4489262526,
+        "analysis:parsing:geojson_url": "https://hydra.s3.rbx.io.cloud.ovh.net/geojson/c7cc1608-2e27-4754-8f59-54391ef363c6.geojson",
+        "analysis:parsing:parquet_size": 123939484,
+        "analysis:parsing:parquet_url": "https://hydra.s3.rbx.io.cloud.ovh.net/parquet/c7cc1608-2e27-4754-8f59-54391ef363c6.parquet",
+        "analysis:parsing:parsing_table": "bd9426da4b9203f0f4a00d1e46f576c4",
+        "analysis:parsing:pmtiles_size": 360262453,
+        "analysis:parsing:pmtiles_url": "https://hydra.s3.rbx.io.cloud.ovh.net/pmtiles/c7cc1608-2e27-4754-8f59-54391ef363c6.pmtiles",
+        "analysis:parsing:started_at": "2026-11-18T09:08:34.595998Z",
+        "check:available": true,
+        "check:cors:allow-credentials": "true",
+        "check:cors:allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+        "check:cors:allow-methods": "GET, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-11-12T23:29:00.818885+00:00",
+        "check:headers:content-length": 117378804,
+        "check:headers:content-type": "application/gzip",
+        "check:id": 56684071,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": 117378804,
+      "filetype": "file",
+      "format": "csv.gz",
+      "geopf": null,
+      "harvest": null,
+      "id": "c7cc1608-2e27-4754-8f59-54391ef363c6",
+      "internal": {
+        "created_at_internal": "2026-10-20T11:43:46.025000+00:00",
+        "last_modified_internal": "2026-10-20T11:43:46.219000+00:00"
+      },
+      "last_modified": "2026-10-20T11:43:46.219000+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/c7cc1608-2e27-4754-8f59-54391ef363c6",
+      "metrics": {
+        "views": 268
+      },
+      "mime": "application/gzip",
+      "preview_url": "https://explore.data.gouv.fr/fr/resources/c7cc1608-2e27-4754-8f59-54391ef363c6",
+      "schema": null,
+      "title": "DVF 2023",
+      "type": "main",
+      "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres-geolocalisees/20261020-114336/full-2023.csv.gz"
+    },
+    {
+      "checksum": {
+        "type": "sha1",
+        "value": "02e77911bdaf882bd63333b3032f1c37b4f4dc3f"
+      },
+      "created_at": "2026-10-20T11:45:41.790000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 56987599,
+        "analysis:checksum": "5066f0fc31235f8e8222c4c9e234d7860fba2331",
+        "analysis:content-length": 674304099,
+        "analysis:last-modified-at": "2026-10-21T09:23:12Z",
+        "analysis:last-modified-detection": "last-modified-header",
+        "analysis:mime-type": "text/csv",
+        "analysis:parsing:error": "pmtiles_export:error",
+        "analysis:parsing:finished_at": "2026-11-18T12:43:59.723187Z",
+        "analysis:parsing:geojson_size": 4137075863,
+        "analysis:parsing:geojson_url": "https://hydra.s3.rbx.io.cloud.ovh.net/geojson/e7421d40-c719-459c-a942-38d3a0a23fdf.geojson",
+        "analysis:parsing:parquet_size": 113734509,
+        "analysis:parsing:parquet_url": "https://hydra.s3.rbx.io.cloud.ovh.net/parquet/e7421d40-c719-459c-a942-38d3a0a23fdf.parquet",
+        "analysis:parsing:parsing_table": "f5365c9a29bcc44409ba406a91503071",
+        "analysis:parsing:started_at": "2026-11-18T09:06:59.765400Z",
+        "check:available": true,
+        "check:cors:allow-credentials": "true",
+        "check:cors:allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+        "check:cors:allow-methods": "GET, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-11-11T23:26:27.773153+00:00",
+        "check:headers:content-length": 107356846,
+        "check:headers:content-type": "application/gzip",
+        "check:id": 56584599,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": 107356846,
+      "filetype": "file",
+      "format": "csv.gz",
+      "geopf": null,
+      "harvest": null,
+      "id": "e7421d40-c719-459c-a942-38d3a0a23fdf",
+      "internal": {
+        "created_at_internal": "2026-10-20T11:45:41.790000+00:00",
+        "last_modified_internal": "2026-10-20T11:45:42.263000+00:00"
+      },
+      "last_modified": "2026-10-20T11:45:42.263000+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/e7421d40-c719-459c-a942-38d3a0a23fdf",
+      "metrics": {
+        "views": 351
+      },
+      "mime": "application/gzip",
+      "preview_url": "https://explore.data.gouv.fr/fr/resources/e7421d40-c719-459c-a942-38d3a0a23fdf",
+      "schema": null,
+      "title": "DVF 2024",
+      "type": "main",
+      "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres-geolocalisees/20261020-114532/full-2024.csv.gz"
+    },
+    {
+      "checksum": {
+        "type": "sha1",
+        "value": "3f01863b4913bf2d45e5331959e935e1a224b107"
+      },
+      "created_at": "2026-10-20T11:47:28.344000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 56959770,
+        "analysis:checksum": "5a289c7960317ce3f1ae10eeef4972baf33aa6c4",
+        "analysis:content-length": 731194611,
+        "analysis:last-modified-at": "2026-10-21T09:23:34Z",
+        "analysis:last-modified-detection": "last-modified-header",
+        "analysis:mime-type": "text/csv",
+        "analysis:parsing:error": "pmtiles_export:error",
+        "analysis:parsing:finished_at": "2026-11-17T18:31:20.157972Z",
+        "analysis:parsing:geojson_size": 4517648646,
+        "analysis:parsing:geojson_url": "https://hydra.s3.rbx.io.cloud.ovh.net/geojson/b3a0c6d2-2a5a-45a3-81a8-9e860caf5e14.geojson",
+        "analysis:parsing:parquet_size": 122990715,
+        "analysis:parsing:parquet_url": "https://hydra.s3.rbx.io.cloud.ovh.net/parquet/b3a0c6d2-2a5a-45a3-81a8-9e860caf5e14.parquet",
+        "analysis:parsing:parsing_table": "2e1cf34412996d979a174684c0882e2b",
+        "analysis:parsing:started_at": "2026-11-17T17:25:54.857912Z",
+        "check:available": true,
+        "check:cors:allow-credentials": "true",
+        "check:cors:allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+        "check:cors:allow-methods": "GET, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-10-20T11:47:35.384400+00:00",
+        "check:headers:content-length": 116267867,
+        "check:headers:content-type": "application/gzip",
+        "check:id": 55438852,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": 116267867,
+      "filetype": "file",
+      "format": "csv.gz",
+      "geopf": null,
+      "harvest": null,
+      "id": "b3a0c6d2-2a5a-45a3-81a8-9e860caf5e14",
+      "internal": {
+        "created_at_internal": "2026-10-20T11:47:28.344000+00:00",
+        "last_modified_internal": "2026-10-20T11:47:28.564000+00:00"
+      },
+      "last_modified": "2026-10-20T11:47:28.564000+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/b3a0c6d2-2a5a-45a3-81a8-9e860caf5e14",
+      "metrics": {
+        "views": 503
+      },
+      "mime": "application/gzip",
+      "preview_url": "https://explore.data.gouv.fr/fr/resources/b3a0c6d2-2a5a-45a3-81a8-9e860caf5e14",
+      "schema": null,
+      "title": "DVF 2025",
+      "type": "main",
+      "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres-geolocalisees/20261020-114721/full-2025.csv.gz"
+    },
+    {
+      "checksum": {
+        "type": "sha1",
+        "value": "7cf0773e4df06028ab22a569425402739974d6a3"
+      },
+      "created_at": "2026-10-20T11:48:28.546000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 56447278,
+        "analysis:checksum": "8821fceec7bdbbaf37a32cb4a000e135a9d5122d",
+        "analysis:content-length": 324839461,
+        "analysis:last-modified-at": "2026-10-21T09:21:46+00:00",
+        "analysis:last-modified-detection": "last-modified-header",
+        "analysis:mime-type": "text/csv",
+        "analysis:parsing:finished_at": "2026-11-09T09:25:09.633475+00:00",
+        "analysis:parsing:geojson_size": 1967707633,
+        "analysis:parsing:geojson_url": "https://hydra.s3.rbx.io.cloud.ovh.net/geojson/4fa87df4-ac08-447f-8460-2daed16c2cfb.geojson",
+        "analysis:parsing:parquet_size": 56003592,
+        "analysis:parsing:parquet_url": "https://hydra.s3.rbx.io.cloud.ovh.net/parquet/4fa87df4-ac08-447f-8460-2daed16c2cfb.parquet",
+        "analysis:parsing:parsing_table": "654407f2062332242910989842e6535b",
+        "analysis:parsing:pmtiles_size": 141199260,
+        "analysis:parsing:pmtiles_url": "https://hydra.s3.rbx.io.cloud.ovh.net/pmtiles/4fa87df4-ac08-447f-8460-2daed16c2cfb.pmtiles",
+        "analysis:parsing:started_at": "2026-11-09T09:22:38.936813+00:00",
+        "check:available": true,
+        "check:cors:allow-credentials": "true",
+        "check:cors:allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+        "check:cors:allow-methods": "GET, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-10-20T11:48:33.787564+00:00",
+        "check:headers:content-length": 51711646,
+        "check:headers:content-type": "application/gzip",
+        "check:id": 55438931,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": 51711646,
+      "filetype": "file",
+      "format": "csv.gz",
+      "geopf": null,
+      "harvest": null,
+      "id": "4fa87df4-ac08-447f-8460-2daed16c2cfb",
+      "internal": {
+        "created_at_internal": "2026-10-20T11:48:28.546000+00:00",
+        "last_modified_internal": "2026-10-20T11:48:28.710000+00:00"
+      },
+      "last_modified": "2026-10-20T11:48:28.710000+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/4fa87df4-ac08-447f-8460-2daed16c2cfb",
+      "metrics": {
+        "views": 767
+      },
+      "mime": "application/gzip",
+      "preview_url": "https://explore.data.gouv.fr/fr/resources/4fa87df4-ac08-447f-8460-2daed16c2cfb",
+      "schema": null,
+      "title": "DVF 2026 (1er semestre)",
+      "type": "main",
+      "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres-geolocalisees/20261020-114825/full-2026-s1.csv.gz"
+    },
+    {
+      "checksum": {
+        "type": "sha1",
+        "value": "0f595094ddc1f932aac1b4dca4bcba51ffce8c13"
+      },
+      "created_at": "2025-06-13T09:30:24.024000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 57104499,
+        "analysis:checksum": "51fa6b9b4d55967d4aedab1f9b2fd50966b9269b",
+        "analysis:content-length": 3862547635,
+        "analysis:last-modified-at": "2026-10-21T09:30:55Z",
+        "analysis:last-modified-detection": "last-modified-header",
+        "analysis:mime-type": "text/csv",
+        "analysis:parsing:error": "csv_detective:error",
+        "analysis:parsing:finished_at": "2026-11-19T15:49:50.484799Z",
+        "analysis:parsing:started_at": "2026-11-19T14:49:49.387188Z",
+        "check:available": true,
+        "check:cors:allow-credentials": "true",
+        "check:cors:allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+        "check:cors:allow-methods": "GET, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-10-21T08:58:20.831666+00:00",
+        "check:headers:content-length": 609458453,
+        "check:headers:content-type": "application/gzip",
+        "check:id": 55500884,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": 609458453,
+      "filetype": "file",
+      "format": "csv.gz",
+      "geopf": null,
+      "harvest": null,
+      "id": "d7933994-2c66-4131-a4da-cf7cd18040a4",
+      "internal": {
+        "created_at_internal": "2025-06-13T09:30:24.024000+00:00",
+        "last_modified_internal": "2026-10-21T08:58:04.821000+00:00"
+      },
+      "last_modified": "2026-10-21T08:58:04.821000+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/d7933994-2c66-4131-a4da-cf7cd18040a4",
+      "metrics": {
+        "views": 19435
+      },
+      "mime": "application/gzip",
+      "preview_url": null,
+      "schema": null,
+      "title": "DVF juillet 2021 - juin 2026 - fichier unique",
+      "type": "main",
+      "url": "https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres-geolocalisees/20261021-085741/dvf.csv.gz"
+    },
+    {
+      "checksum": null,
+      "created_at": "2025-06-13T09:24:32.405000+00:00",
+      "description": null,
+      "extras": {
+        "analysis:check_id": 57409358,
+        "analysis:checksum": "c97093758cd9b51ee790d93edefe1e4bbaa81ded",
+        "analysis:content-length": 139654,
+        "analysis:last-modified-at": "2026-11-23T19:47:29.165047Z",
+        "analysis:last-modified-detection": "computed-checksum",
+        "analysis:mime-type": "text/html",
+        "check:available": true,
+        "check:cors:allow-headers": "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
+        "check:cors:allow-methods": "GET, POST, OPTIONS",
+        "check:cors:allow-origin": "*",
+        "check:cors:max-age": "1728000",
+        "check:cors:status": 204,
+        "check:date": "2026-11-19T09:03:20.282438Z",
+        "check:headers:content-type": "text/html",
+        "check:id": 57084810,
+        "check:status": 200,
+        "check:timeout": false
+      },
+      "filesize": null,
+      "filetype": "remote",
+      "format": "url",
+      "geopf": null,
+      "harvest": null,
+      "id": "e34cc6d1-a2d9-4147-affa-845aa5a7666b",
+      "internal": {
+        "created_at_internal": "2025-06-13T09:24:32.405000+00:00",
+        "last_modified_internal": "2025-06-13T09:24:32.405000+00:00"
+      },
+      "last_modified": "2026-11-23T19:47:29.165047+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/e34cc6d1-a2d9-4147-affa-845aa5a7666b",
+      "metrics": {
+        "views": 5891
+      },
+      "mime": null,
+      "preview_url": null,
+      "schema": null,
+      "title": "Documentation des données sources",
+      "type": "documentation",
+      "url": "https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres/#/resources/d573456c-76eb-4276-b91c-e6b9c89d6656"
+    },
+    {
+      "checksum": null,
+      "created_at": "2019-04-25T15:43:27.466000+00:00",
+      "description": "     \n",
+      "extras": {
+        "analysis:check_id": 47366309,
+        "analysis:checksum": "6df11d710305ca36a8c9c27c92c3866948088607",
+        "analysis:content-length": 947,
+        "analysis:last-modified-at": "2026-05-25T15:15:48.738325+00:00",
+        "analysis:last-modified-detection": "computed-checksum",
+        "analysis:mime-type": "text/html",
+        "check:available": true,
+        "check:count-availability": 28,
+        "check:date": "2026-11-19T23:32:07.709630Z",
+        "check:headers:content-type": "text/html",
+        "check:id": 57125541,
+        "check:status": 200,
+        "check:timeout": false,
+        "check:url": "https://files.data.gouv.fr/geo-dvf/latest/"
+      },
+      "filesize": null,
+      "filetype": "remote",
+      "format": "url",
+      "geopf": null,
+      "harvest": null,
+      "id": "316795eb-a3fa-465d-b058-38ef8579da11",
+      "internal": {
+        "created_at_internal": "2019-04-25T15:43:27.466000+00:00",
+        "last_modified_internal": "2026-10-20T11:28:30.647000+00:00"
+      },
+      "last_modified": "2026-05-25T15:15:48.738325+00:00",
+      "latest": "https://www.data.gouv.fr/api/1/datasets/r/316795eb-a3fa-465d-b058-38ef8579da11",
+      "metrics": {
+        "views": 46626
+      },
+      "mime": null,
+      "preview_url": null,
+      "schema": null,
+      "title": "[ARCHIVE] Données au format CSV - livraison avril - suppression au 31/11/2026",
+      "type": "other",
+      "url": "https://files.data.gouv.fr/geo-dvf/latest/csv/"
+    }
+  ],
+  "schema": null,
+  "slug": "demandes-de-valeurs-foncieres-geolocalisees",
+  "spatial": {
+    "geom": null,
+    "granularity": "other",
+    "zones": [
+      "country:fr"
+    ]
+  },
+  "tags": [
+    "cadastre",
+    "dvf",
+    "foncier",
+    "immobilier",
+    "lots",
+    "parcelles",
+    "prix",
+    "transactions",
+    "valeurs-foncieres"
+  ],
+  "temporal_coverage": {
+    "end": "2025-12-31",
+    "start": "2020-07-01"
+  },
+  "title": "Demandes de valeurs foncières géolocalisées",
+  "uri": "https://www.data.gouv.fr/api/1/datasets/demandes-de-valeurs-foncieres-geolocalisees/"
+}

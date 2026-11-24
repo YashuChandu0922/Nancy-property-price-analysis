@@ -1,0 +1,14 @@
+let
+    Source = Csv.Document(
+        File.Contents("data/processed/transactions_clean.csv"),
+        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+    ),
+    PromoteHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    ChangedTypes = Table.TransformColumnTypes(
+        PromoteHeaders,
+        {{"date_mutation", type date}, {"year", Int64.Type},
+         {"sale_value_eur", Currency.Type}, {"surface_m2", type number},
+         {"price_per_m2", Currency.Type}, {"is_outlier", Int64.Type}}
+    )
+in
+    ChangedTypes

@@ -1,0 +1,19 @@
+Transaction Count = COUNTROWS('transactions_clean')
+
+Median Price per m2 = MEDIAN('transactions_clean'[price_per_m2])
+
+Average Price per m2 = AVERAGE('transactions_clean'[price_per_m2])
+
+Outlier Transactions =
+CALCULATE(
+    [Transaction Count],
+    'transactions_clean'[is_outlier] = 1
+)
+
+Outlier Rate % = DIVIDE([Outlier Transactions], [Transaction Count])
+
+Price YoY % =
+VAR PreviousYearPrice =
+    CALCULATE([Median Price per m2], DATEADD('Date'[Date], -1, YEAR))
+RETURN
+    DIVIDE([Median Price per m2] - PreviousYearPrice, PreviousYearPrice)

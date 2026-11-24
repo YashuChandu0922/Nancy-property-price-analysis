@@ -1,0 +1,125 @@
+year,iris_code,iris_name,transactions,median_price_per_m2,avg_price_per_m2,median_surface_m2,price_rank,previous_year_median_price_per_m2,yoy_price_change_pct
+2023,543951003,Port Sainte-Catherine Le Jardin d'Eau,17,3300.0,3203.1,51.0,1,,
+2023,543951102,Pépinière Vieille Ville,27,2777.8,2801.4,49.0,2,,
+2023,543951001,XXe Corps Sud Austrasie Meurthe,46,2757.1,2832.8,55.0,3,,
+2023,543951101,Cours Léopold,46,2725.5,2817.6,42.0,4,,
+2023,543950505,Rotonde Kennedy Bellange,4,2568.4,2318.7,73.0,5,,
+2023,543950805,Lionnois Hôpital Central Maternité,14,2563.1,2615.8,69.5,6,,
+2023,543950905,Centre Gare Marché,19,2550.0,2588.3,32.0,7,,
+2023,543951002,XXe Corps Nord Oberlin Mac-Mahon,60,2525.2,2435.5,54.0,8,,
+2023,543950303,Albert Ier Verdun Isabey,45,2488.4,2516.1,47.0,9,,
+2023,543950402,Santifontaine,28,2485.3,2456.1,67.5,10,,
+2023,543950901,Charles III Sud Jardiniers,42,2428.6,2580.4,57.5,11,,
+2023,543950503,Mon Désert Sud Jeanne d'Arc Ouest,40,2415.3,2458.7,52.0,12,,
+2023,543950504,Prouvé République Garenne Nord,71,2412.7,2486.9,55.0,13,,
+2023,543950801,Rene II Bonsecours La Madeleine,51,2406.3,2498.4,39.0,14,,
+2023,543950604,Leclerc Sud Chevert Exelmans,35,2404.8,2416.3,53.0,15,,
+2023,543951202,Citadelle Sellier C. de Foucauld,50,2402.8,2533.2,60.0,16,,
+2023,543950302,Colline Boudonville,31,2400.0,2383.8,33.0,17,,
+2023,543950904,Charles III Nord Tiercelins Saint-Georges,83,2397.6,2471.4,48.0,18,,
+2023,543950802,Pichon Place des Vosges Lebrun Nord,46,2390.7,2414.1,46.5,19,,
+2023,543950501,Croix de Bourgogne Mouilleron,54,2376.0,2589.2,44.0,20,,
+2023,543950803,Olry Lobau Remenauville,61,2375.0,2405.6,49.0,21,,
+2023,543950602,Vauban Nord Placieux Parc Sainte-Marie,32,2363.8,2449.2,66.5,22,,
+2023,543951203,Virginie Mauvais Vayringe Crosne,46,2362.6,2485.7,64.5,23,,
+2023,543951201,Keller Metz Joli Cœur,68,2361.0,2391.6,48.0,24,,
+2023,543950902,Gambetta Carmes Faïencerie,45,2352.9,2451.6,45.0,25,,
+2023,543950404,Foch Commanderie,76,2335.3,2363.4,65.5,26,,
+2023,543950502,Mon Désert Nord Jeanne d'Arc Est,47,2333.3,2379.2,41.0,27,,
+2023,543950603,Haussonville,17,2308.8,2071.5,66.0,28,,
+2023,543950401,Préville Patton,66,2298.1,2354.7,56.5,29,,
+2023,543950702,Leclerc Sud Saurupt Clemenceau,38,2268.1,2313.3,49.0,30,,
+2023,543950403,Anatole France Sud-Bertin Nord,74,2226.0,2388.6,54.5,31,,
+2023,543950601,Vauban Sud Gebhart Turinaz,25,2171.9,2291.6,68.0,32,,
+2023,543950701,Leclerc Nord Garenne Sud,34,2074.6,2074.7,65.0,33,,
+2023,543950703,Oudinot Cimetière du Sud Doumer,29,2068.5,2197.0,65.0,34,,
+2023,543950301,Colline Scarpone,58,2027.3,2101.7,53.5,35,,
+2023,543950903,Saint-Sébastien Cyfflé,73,2000.0,2019.7,67.0,36,,
+2023,543950203,Buthégnemont,7,1825.4,1799.3,81.0,37,,
+2023,543950201,Cure d'Air,24,1713.6,1890.8,66.0,38,,
+2023,543950202,Boufflers Sud-Ouest Beauregard,21,1439.9,1642.9,72.0,39,,
+2023,543950101,Haut du Lièvre Nord Gentilly,2,738.5,738.5,70.0,40,,
+2023,543950103,Haut du Lièvre Blanc Sycomore,9,282.2,338.9,63.0,41,,
+2024,543951003,Port Sainte-Catherine Le Jardin d'Eau,8,3162.3,3057.7,53.0,1,3300.0,-4.2
+2024,543951102,Pépinière Vieille Ville,38,2723.6,2697.2,55.0,2,2777.8,-2.0
+2024,543950905,Centre Gare Marché,17,2658.0,2778.6,27.0,3,2550.0,4.2
+2024,543950505,Rotonde Kennedy Bellange,6,2595.3,2359.6,64.0,4,2568.4,1.0
+2024,543951201,Keller Metz Joli Cœur,64,2593.6,2611.0,53.5,5,2361.0,9.9
+2024,543950805,Lionnois Hôpital Central Maternité,9,2560.0,2557.3,36.0,6,2563.1,-0.1
+2024,543950902,Gambetta Carmes Faïencerie,52,2544.9,2544.6,53.0,7,2352.9,8.2
+2024,543950503,Mon Désert Sud Jeanne d'Arc Ouest,32,2529.4,2517.3,52.5,8,2415.3,4.7
+2024,543950604,Leclerc Sud Chevert Exelmans,25,2519.7,2612.6,55.0,9,2404.8,4.8
+2024,543951101,Cours Léopold,47,2500.0,2492.4,71.0,10,2725.5,-8.3
+2024,543951002,XXe Corps Nord Oberlin Mac-Mahon,62,2483.3,2486.8,65.5,11,2525.2,-1.7
+2024,543950402,Santifontaine,40,2464.8,2478.2,56.0,12,2485.3,-0.8
+2024,543950901,Charles III Sud Jardiniers,29,2450.0,2749.8,46.0,13,2428.6,0.9
+2024,543950904,Charles III Nord Tiercelins Saint-Georges,98,2438.9,2525.4,48.0,14,2397.6,1.7
+2024,543950404,Foch Commanderie,61,2430.6,2555.1,65.0,15,2335.3,4.1
+2024,543951202,Citadelle Sellier C. de Foucauld,60,2396.7,2389.8,65.5,16,2402.8,-0.3
+2024,543950504,Prouvé République Garenne Nord,81,2392.9,2398.7,37.0,17,2412.7,-0.8
+2024,543950702,Leclerc Sud Saurupt Clemenceau,39,2369.6,2261.2,50.0,18,2268.1,4.5
+2024,543951001,XXe Corps Sud Austrasie Meurthe,39,2355.9,2412.4,51.0,19,2757.1,-14.6
+2024,543950501,Croix de Bourgogne Mouilleron,48,2334.0,2307.3,48.0,20,2376.0,-1.8
+2024,543951203,Virginie Mauvais Vayringe Crosne,49,2327.3,2241.1,52.0,21,2362.6,-1.5
+2024,543950801,Rene II Bonsecours La Madeleine,48,2317.3,2355.2,41.0,22,2406.3,-3.7
+2024,543950502,Mon Désert Nord Jeanne d'Arc Est,46,2293.0,2253.5,35.5,23,2333.3,-1.7
+2024,543950303,Albert Ier Verdun Isabey,62,2239.3,2263.4,61.5,24,2488.4,-10.0
+2024,543950601,Vauban Sud Gebhart Turinaz,38,2228.8,2270.7,69.5,25,2171.9,2.6
+2024,543950401,Préville Patton,85,2222.2,2276.3,60.0,26,2298.1,-3.3
+2024,543950802,Pichon Place des Vosges Lebrun Nord,69,2192.3,2209.8,46.0,27,2390.7,-8.3
+2024,543950203,Buthégnemont,7,2188.6,2408.6,57.0,28,1825.4,19.9
+2024,543950602,Vauban Nord Placieux Parc Sainte-Marie,41,2179.7,2199.8,64.0,29,2363.8,-7.8
+2024,543950803,Olry Lobau Remenauville,54,2158.6,2183.0,43.5,30,2375.0,-9.1
+2024,543950403,Anatole France Sud-Bertin Nord,63,2133.3,2198.0,74.0,31,2226.0,-4.2
+2024,543950301,Colline Scarpone,32,2066.9,2126.5,55.0,32,2027.3,2.0
+2024,543950302,Colline Boudonville,26,1968.5,2136.2,42.5,33,2400.0,-18.0
+2024,543950701,Leclerc Nord Garenne Sud,32,1963.1,2056.3,63.0,34,2074.6,-5.4
+2024,543950703,Oudinot Cimetière du Sud Doumer,17,1956.5,2009.8,56.0,35,2068.5,-5.4
+2024,543950603,Haussonville,9,1898.9,1848.0,66.0,36,2308.8,-17.8
+2024,543950903,Saint-Sébastien Cyfflé,58,1819.1,1895.4,66.5,37,2000.0,-9.0
+2024,543950101,Haut du Lièvre Nord Gentilly,2,1769.1,1769.1,52.5,38,738.5,139.6
+2024,543950202,Boufflers Sud-Ouest Beauregard,29,1538.7,1684.6,66.0,39,1439.9,6.9
+2024,543950201,Cure d'Air,25,1538.5,1696.1,72.0,40,1713.6,-10.2
+2024,543950103,Haut du Lièvre Blanc Sycomore,10,277.0,277.3,74.0,41,282.2,-1.8
+2025,543951003,Port Sainte-Catherine Le Jardin d'Eau,11,2732.9,2747.2,44.0,1,3162.3,-13.6
+2025,543951201,Keller Metz Joli Cœur,93,2661.8,2670.8,52.0,2,2593.6,2.6
+2025,543951101,Cours Léopold,67,2632.2,2626.9,44.0,3,2500.0,5.3
+2025,543950604,Leclerc Sud Chevert Exelmans,38,2632.2,2722.9,47.0,3,2519.7,4.5
+2025,543950905,Centre Gare Marché,22,2610.5,2708.3,41.0,4,2658.0,-1.8
+2025,543951002,XXe Corps Nord Oberlin Mac-Mahon,75,2605.3,2641.7,55.0,5,2483.3,4.9
+2025,543950402,Santifontaine,58,2591.0,2663.5,67.0,6,2464.8,5.1
+2025,543951102,Pépinière Vieille Ville,29,2584.9,2855.4,54.0,7,2723.6,-5.1
+2025,543950503,Mon Désert Sud Jeanne d'Arc Ouest,46,2499.8,2427.0,46.0,8,2529.4,-1.2
+2025,543950505,Rotonde Kennedy Bellange,8,2496.0,2376.1,44.0,9,2595.3,-3.8
+2025,543951001,XXe Corps Sud Austrasie Meurthe,58,2471.8,2580.5,48.0,10,2355.9,4.9
+2025,543950902,Gambetta Carmes Faïencerie,70,2443.8,2576.3,63.5,11,2544.9,-4.0
+2025,543950904,Charles III Nord Tiercelins Saint-Georges,89,2434.3,2472.7,46.0,12,2438.9,-0.2
+2025,543950404,Foch Commanderie,81,2419.4,2537.6,68.0,13,2430.6,-0.5
+2025,543950805,Lionnois Hôpital Central Maternité,18,2397.4,2353.1,46.0,14,2560.0,-6.4
+2025,543950403,Anatole France Sud-Bertin Nord,75,2372.9,2533.1,53.0,15,2133.3,11.2
+2025,543950401,Préville Patton,80,2369.4,2422.0,56.5,16,2222.2,6.6
+2025,543951202,Citadelle Sellier C. de Foucauld,43,2326.4,2509.8,50.0,17,2396.7,-2.9
+2025,543950303,Albert Ier Verdun Isabey,54,2310.5,2359.9,43.0,18,2239.3,3.2
+2025,543950203,Buthégnemont,9,2309.8,2301.8,65.0,19,2188.6,5.5
+2025,543950504,Prouvé République Garenne Nord,105,2282.5,2489.8,42.0,20,2392.9,-4.6
+2025,543950302,Colline Boudonville,36,2265.0,2246.9,40.0,21,1968.5,15.1
+2025,543951203,Virginie Mauvais Vayringe Crosne,50,2264.2,2378.6,51.0,22,2327.3,-2.7
+2025,543950802,Pichon Place des Vosges Lebrun Nord,69,2251.1,2303.9,48.0,23,2192.3,2.7
+2025,543950801,Rene II Bonsecours La Madeleine,42,2240.0,2302.2,40.0,24,2317.3,-3.3
+2025,543950702,Leclerc Sud Saurupt Clemenceau,48,2212.9,2219.4,69.0,25,2369.6,-6.6
+2025,543950501,Croix de Bourgogne Mouilleron,75,2208.3,2273.8,45.0,26,2334.0,-5.4
+2025,543950502,Mon Désert Nord Jeanne d'Arc Est,44,2165.4,2188.4,41.0,27,2293.0,-5.6
+2025,543950901,Charles III Sud Jardiniers,52,2162.3,2323.8,45.0,28,2450.0,-11.7
+2025,543950602,Vauban Nord Placieux Parc Sainte-Marie,42,2148.8,2304.4,61.5,29,2179.7,-1.4
+2025,543950803,Olry Lobau Remenauville,61,2106.4,2198.7,57.0,30,2158.6,-2.4
+2025,543950703,Oudinot Cimetière du Sud Doumer,31,2035.7,2404.4,65.0,31,1956.5,4.0
+2025,543950301,Colline Scarpone,38,2012.8,2033.9,65.0,32,2066.9,-2.6
+2025,543950903,Saint-Sébastien Cyfflé,76,1900.0,1948.0,64.5,33,1819.1,4.4
+2025,543950701,Leclerc Nord Garenne Sud,33,1895.2,2169.9,71.0,34,1963.1,-3.5
+2025,543950603,Haussonville,11,1872.0,1894.4,50.0,35,1898.9,-1.4
+2025,543950101,Haut du Lièvre Nord Gentilly,9,1842.1,1885.0,58.0,36,1769.1,4.1
+2025,543950601,Vauban Sud Gebhart Turinaz,32,1809.8,1937.6,73.0,37,2228.8,-18.8
+2025,543950201,Cure d'Air,28,1740.0,1967.0,69.0,38,1538.5,13.1
+2025,543950102,Haut du Lièvre Tamaris Tilleul Argenté,4,1572.2,1721.0,63.5,39,,
+2025,543950202,Boufflers Sud-Ouest Beauregard,29,1500.0,1655.1,65.0,40,1538.7,-2.5
+2025,543950103,Haut du Lièvre Blanc Sycomore,2,772.6,772.6,68.5,41,277.0,178.9
